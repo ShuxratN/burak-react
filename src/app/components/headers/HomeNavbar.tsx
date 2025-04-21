@@ -62,11 +62,11 @@ export function HomeNavbar () {
                     <Box className={"signup"}>
                         {!authMember ? (
                         <Button variant={"contained"}
-                        className={"signup-button"}
-                        > Sign UP </Button> ) : null }
+                        className={"signup-button"}> 
+                        Sign UP </Button> ) : null }
                     </Box>
                 </Stack>
-                <Box className={"logo-frame"}> LOGO
+                <Box className={"logo-frame"}> 
                <div className={"logo-img"}></div>
                 </Box>
             </Stack>
