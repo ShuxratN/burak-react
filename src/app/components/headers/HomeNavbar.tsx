@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export function HomeNavbar () {
  
-    const authMember = true;
+    const authMember = null;
     return ( 
     <div className="home-navbar">
         <Container className="navbar-container">
@@ -52,7 +52,24 @@ export function HomeNavbar () {
                 )}
                 </Stack>
             </Stack>
-            <Stack>DETAIL</Stack>
+            <Stack className={"header-frame"}>
+                <Stack className={"detail"}> 
+                    <Box className={"head-main-txt"}>
+                        One of the  most Delicious Coisine
+                    </Box>
+                    <Box className={"wel-txt"}>The Choise, not just a choise</Box>
+                    <Box className={"service-txt"}>24 hours service</Box>
+                    <Box className={"signup"}>
+                        {!authMember ? (
+                        <Button variant={"contained"}
+                        className={"signup-button"}
+                        > Sign UP </Button> ) : null }
+                    </Box>
+                </Stack>
+                <Box className={"logo-frame"}> LOGO
+               <div className={"logo-img"}></div>
+                </Box>
+            </Stack>
         </Container>
     </div>
     );
