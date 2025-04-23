@@ -6,13 +6,15 @@ import CardOverflow from "@mui/joy/CardOverflow";
 import Typography from "@mui/joy/Typography";
 import { CssVarsProvider } from "@mui/joy/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Divider from " .. / .. /components/divider";
+import Divider from "../../components/divider";
+
 
 const newDishes = [
 { productName: "Cutlet", imagePath: "/img/cutlet.webp" },
 { productName: "Kebab", imagePath: "/img/kebab-fresh.webp" },
 { productName: "Kebab", imagePath: "/img/kebab.webp" },
 { productName: "Lavash", imagePath: "/img/lavash.webp" },
+];
 
 export default function NewDishes() {
  return (
@@ -26,10 +28,9 @@ export default function NewDishes() {
 return (
 <Card key={index} variant="outlined" className={"card"}>
 <CardOverflow>
-<div className="product-sale">Normal size</div>
+  <div className="product-sale">Normal size</div>
 <AspectRatio ratio="1">
-<div className="product-sale">Normal size</div>
-<AspectRatio ratio="1">
+
 <img src={ele.imagePath} alt="" />
 </AspectRatio>
 </CardOverflow>
@@ -47,13 +48,21 @@ return (
 <Typography className={"views"}>
 20
 <VisibilityIcon
-sx {{ fontSize: 20, marginLeft: "5px" }p
+sx={{ fontSize: 20, marginLeft: "5px" }}
+/>
 
-</Typog raphy>
+</Typography>
 </Stack>
 </Stack>
 </CardOverflow>
 </Card>
-
+);
+})}
 </CssVarsProvider>
 </Stack>
+</Stack>
+</Container>
+</div>
+);
+
+}
