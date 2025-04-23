@@ -28,3 +28,32 @@ return (
 <CardOverflow>
 <div className="product-sale">Normal size</div>
 <AspectRatio ratio="1">
+<div className="product-sale">Normal size</div>
+<AspectRatio ratio="1">
+<img src={ele.imagePath} alt="" />
+</AspectRatio>
+</CardOverflow>
+
+<CardOverflow variant="soft" className="product-detail">
+<Stack className="info">
+<Stack flexDirection={"row"}>
+<Typography className={"title"}>
+{ele.productName}
+</Typography>
+<Divider width="2" height="24" bg="#d9d9d9" />
+<Typography className={"price"}>$12</Typography>
+</Stack>
+<Stack>
+<Typography className={"views"}>
+20
+<VisibilityIcon
+sx {{ fontSize: 20, marginLeft: "5px" }p
+
+</Typog raphy>
+</Stack>
+</Stack>
+</CardOverflow>
+</Card>
+
+</CssVarsProvider>
+</Stack>
