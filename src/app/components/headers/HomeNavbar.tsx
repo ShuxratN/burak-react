@@ -16,23 +16,23 @@ export default function HomeNavbar () {
                     </NavLink>
                 </Box>
                 <Stack className="links">
-                <Box className={".hover-line"}>
+                <Box className={"hover-line"}>
                   <NavLink to="/" activeClassName="underline"> Home </NavLink>
                 </Box>
-                <Box className={".hover-line"}>
+                <Box className={"hover-line"}>
                   <NavLink to="/products" activeClassName="underline" > Products </NavLink>
                 </Box>
                 {authMember ? (
-                <Box className={".hover-line"}>
+                <Box className={"hover-line"}>
                   <NavLink to="/orders" activeClassName="underline"> Orders </NavLink>
                 </Box>
                 ) : null}
                 {authMember ? (
-                <Box className={".hover-line"}>
+                <Box className={"hover-line"}>
                   <NavLink to="/member-page" activeClassName="underline"> My Page </NavLink>
                 </Box>
                 ) : null}
-                <Box className={".hover-line"}>
+                <Box className={"hover-line"}>
                   <NavLink to="/help" activeClassName="underline"> Help </NavLink>
                 </Box>
                 {/* BASKET */}
