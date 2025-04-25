@@ -52,8 +52,6 @@ export default function Statistics() {
                         </Typography>
                       </Stack>
                     </CardContent>
-
-                    {/* 👇 Added username under the image */}
                     <CardOverflow
                       sx={{
                         justifyContent: "center",
