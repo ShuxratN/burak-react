@@ -1,10 +1,11 @@
 import React from "react";
-import {Box,Button,Container,  Stack,Badge,  Pagination,PaginationItem, } from "@mui/material";
-
+import {Box, Button, Container,  Stack,Badge,  Pagination,PaginationItem, } from "@mui/material";
+import TextField from '@mui/material/TextField';
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import LocationOn from '@mui/icons-material/LocationOn';
 
 const products = [
   { productName: "Cutlet", imagePath: "/img/cutlet.webp" },
@@ -19,8 +20,23 @@ export default function Products() {
   return (
     <div className={"products"}>
       <Container>
-        <Stack  alignItems={"center"}>
-         {/* <Stack className={"avatar-big-box"}></Stack>*/}
+      <h1 className="burak-rest"> Burak Restaurant</h1>
+        <Stack alignItems={"center"}>
+          <Stack className={"avatar-big-box"}> 
+          
+          <TextField className={"type"}
+              placeholder="Type here"
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                  <Button className="search" variant="contained" color="primary" startIcon={<LocationOn />}>
+                      Search
+                  </Button>
+                )
+              }}
+              sx={{ width: 300 }}
+            />
+          </Stack>
           <Stack className={"dishes-filter-section"}>
             <Stack className={"dishes-filter-box"}>
               <Button variant={"contained"} color={"primary"} className={"order"}>
@@ -50,7 +66,7 @@ export default function Products() {
                 <Button variant={"contained"} color={"secondary"}>
                   Salad
                 </Button>
-                <Button variant={"contained"} color={"secondary"}>
+                <Button variant={"contained"} color={"primary"}>
                   Dish
                 </Button>
               </Stack>
@@ -60,7 +76,7 @@ export default function Products() {
               {products.length !== 0 ? (
                 products.map((product, index) => {
                   return (
-                    <Stack key={index} className={"product-card"}>
+                    <Stack  key={index} className={"product-card"}>
                       <Stack
                         className={"product-img"}
                         sx={{
@@ -137,13 +153,13 @@ export default function Products() {
           <img  className={"burak-img"} src="/img/gurme.webp"  />
         </div>
         <div className={"gurme-img"}>
-          <img  className={"burak-img"} src="/img/gurme.webp"  />
+          <img  className={"burak-img"} src="/img/doner.webp"  />
         </div>
         <div className={"gurme-img"}>
-          <img  className={"burak-img"} src="/img/gurme.webp"  />
+          <img  className={"burak-img"} src="/img/sweets.webp"  />
         </div>
         <div className={"gurme-img"}>
-          <img  className={"burak-img"} src="/img/gurme.webp"  />
+          <img  className={"burak-img"} src="/img/seafood.webp"  />
         </div>
         </Box>
       </div>
@@ -154,7 +170,11 @@ export default function Products() {
             <Box className={"title"}>Our address</Box>
             <iframe
               style={{ marginTop: "60px" }}
-              src="https://www.google.com/maps/place/Asaka,+Uzbekistan"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.
+              086297427276!2d-122.42067968468106!3d37.77492927975925!2m3!1f0!
+              2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c2f65aaf3%3A0
+              x3b1dbd5d44cc7f4c!2sSan%20Francisco%2C%20CA%2C%20USA!5e0!3m2!1se
+              n!2s!4v1615158890612!5m2!1sen!2s"
               width="1320"
               height="500"
               referrerPolicy="no-referrer-when-downgrade"
