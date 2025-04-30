@@ -45,7 +45,6 @@ export default function FinishedOrders() {
           );
         })}
 
-        {/* Placeholder for no orders (conditionally hidden now) */}
         {false && (
           <Box display="flex" flexDirection="row" justifyContent="center">
             <img
