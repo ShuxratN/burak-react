@@ -12,7 +12,12 @@ class Test extends React.Component {
       };
     }
     changeDetail = () => {
-      this.setState({color: "blue", brand: "tesla",});
+      this.setState({
+        color: "blue", 
+        brand: "Tesla",
+        model: "Model S",
+        year: 2023,
+    });
     }
 
     componentDidMount() {
@@ -26,7 +31,7 @@ class Test extends React.Component {
 
     componentDidUpdate() {}
 
-    
+
     render() {
       return (
         <div>
