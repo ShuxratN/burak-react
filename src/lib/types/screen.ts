@@ -1,3 +1,4 @@
+import { Member } from "./member";
 import { Product } from "./product";
 
 
@@ -6,9 +7,15 @@ import { Product } from "./product";
 export interface AppRootState {
     homePage: HomePageState;
 }
-
+/** PRODUCTS */
 export interface HomePageState {
     popularDishes: Product[];
-    newDishes:  [];
-    topUsers: [];
+    newDishes: Product[];
+    topUsers: Member[];
 }
+
+/** PRODUCTS PAGE */
+
+
+
+/** ORDERS PAGE  */
