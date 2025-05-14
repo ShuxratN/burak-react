@@ -1,10 +1,15 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import HomePage from "./screens/homePage";
 import HomePageReducer from "./screens/homePage/slice";
+import { getDefaultCompilerOptions } from "typescript";
+import { curryGetDefaultMiddleware } from "@reduxjs/toolkit/dist/getDefaultMiddleware";
 
 export const store = configureStore({
+  middleware: (getGetDefaultMiddleware) => 
+    // @ts-ignore
+    getGetDefaultMiddleware().concat(),
   reducer: {
-    homePage: HomePageReducer
+    homePage: HomePageReducer,
   },
 });
 
