@@ -8,14 +8,25 @@ import { CssVarsProvider } from "@mui/joy/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Divider from "../../components/divider";
 
-const newDishes = [
-  { productName: "Cutlet", imagePath: "/img/cutlet.webp", price: 12 },
-  { productName: "Kebab", imagePath: "/img/kebab-fresh.webp", price: 12 },
-  { productName: "Kebab", imagePath: "/img/kebab.webp", price: 12 },
-  { productName: "Lavash", imagePath: "/img/lavash.webp", price: 12 },
-];
+import { DefaultRootState, useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrieveNewDishes } from "./selector";
+import { Product } from "../../../lib/types/product";
+import { serverApi } from "../../../lib/config";
+import { ProductCollection } from "../../../lib/enums/product.enum";
+
+
+/** REDUX SLICE $ SELECTOR */
+const newDishesRetriever = createSelector(retrieveNewDishes, (newDishes) => ({ 
+  newDishes, 
+}));
 
 export default function NewDishes() {
+  const  { newDishes } = useSelector(newDishesRetriever)
+
+
+  console.log("newDishes", newDishes)
+
   return (
     <div className="new-products-frame">
       <Container>
@@ -24,30 +35,41 @@ export default function NewDishes() {
           <Stack className="cards-frame" direction="row" flexWrap="wrap" spacing={2}>
             <CssVarsProvider>
               {newDishes.length !== 0 ? (
-                newDishes.map((ele, index) => (
-                  <Card key={`${ele.productName}-${index}`} variant="outlined" className="card">
+                newDishes.map((product: Product) => {
+                 const imagePath = `${serverApi}/${product.productImages[0]}`;
+                 const sizeVolume = 
+                 product.productCollection === ProductCollection.DRINK
+                 ? product.productVolume + "l"
+                 : product.productSize + "size";
+                 return (
+                  <Card 
+                  key={product._id} 
+                  variant="outlined" 
+                  className={"card"}
+                  >
                     <CardOverflow>
-                      <div className="product-sale">Normal size</div>
+                      <div className="product-sale">{sizeVolume}</div>
                       <AspectRatio ratio="1">
-                        <img src={ele.imagePath} alt={ele.productName} />
+                        <img src={imagePath} alt="" />
                       </AspectRatio>
                     </CardOverflow>
 
                     <CardOverflow variant="soft" className="product-detail">
                       <Stack className="info">
                         <Stack flexDirection="row" alignItems="center" spacing={1}>
-                          <Typography className="title">{ele.productName}</Typography>
+                          <Typography className="title">{product.productName}</Typography>
                           <Divider width="2" height="24" bg="#d9d9d9" />
-                          <Typography className="price">${ele.price}</Typography>
+                          <Typography className="price">${product.productPrice}</Typography>
                         </Stack>
                         <Typography className="views">
-                          20
+                          {product.productName}
                           <VisibilityIcon sx={{ fontSize: 20, marginLeft: "5px" }} />
                         </Typography>
                       </Stack>
                     </CardOverflow>
                   </Card>
-                ))
+                 )
+                })
               ) : (
                 <Box className="no-data">No new dishes available</Box>
               )}
@@ -58,3 +80,5 @@ export default function NewDishes() {
     </div>
   );
 }
+
+
