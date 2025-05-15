@@ -13,6 +13,8 @@ import { createSelector } from "reselect";
 import { setPolpularDishes } from "./slice";
 import { retrieveNewDishes, retrievePopularDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
+import Productservice from "../../services/ProductService";
+import { ProductCollection } from "../../../lib/enums/product.enum";
 
 /** REDUX SLICE $ SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -29,7 +31,23 @@ export default function HomePage() {
 
 
   useEffect(() => {
+    // Beckend server data fetch => Data 
+    const product = new Productservice;
+    product
+    .getProducts({
+      page: 1,
+      limit: 4,
+      order: "productViews",
+      productCollection: ProductCollection.DISH,
+    })
+    .then((data) => {
+      console.log("data passed here:", data);
+      setPolpularDishes(data);
+    })
+    .catch();
   }, []);
+
+  
 
     return ( 
      <div className="homepage">
