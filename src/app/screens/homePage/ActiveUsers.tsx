@@ -1,76 +1,41 @@
-import { Box, CardContent, Container, Stack } from "@mui/material";
-import Card from "@mui/joy/Card";
-import { CardCover, CssVarsProvider, Typography } from "@mui/joy";
-import CardOverflow from "@mui/joy/CardOverflow";
+import { Box, Container, Stack } from "@mui/material";
+import { Card, CardCover, CardContent, Typography } from "@mui/joy";
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrievePopularDishes, retrieveTopUsers } from "./selector";
+import { serverApi } from "../../../lib/config";
+import { Member } from "../../../lib/types/member";
 
-const activeUsers = [
-  { memberNick: "Martin", memberImage: "/img/martin.webp" },
-  { memberNick: "Justin", memberImage: "/img/justin.webp" },
-  { memberNick: "Rose", memberImage: "/img/rose.webp" },
-  { memberNick: "Nusret", memberImage: "/img/nusret.webp" },
-];
+/** REDUX SLICE $ SELECTOR */
+const topUsersRetriever = createSelector(retrieveTopUsers, (topUsers) => ({
+  topUsers,
+}));
 
-export default function Statistics() {
+export default function ActiveUsers() {
+  const { topUsers } = useSelector(topUsersRetriever);
+
   return (
     <div className="active-users-frame">
       <Container>
         <Stack className="main">
           <Box className="category-title">Active Users</Box>
           <Stack className="cards-frame">
-            {activeUsers.length !== 0 ? (
-              activeUsers.map((ele) => (
-                <CssVarsProvider key={ele.memberNick}>
-                  <Card className="card">
+            {topUsers && topUsers.length > 0 ? (
+              topUsers.map((member: Member) => {
+                const imagePath = `${serverApi}/${member.memberImage}`;
+                return (
+                  <Card key={member._id} variant="outlined" className="card">
                     <CardCover>
-                      <img src={ele.memberImage} alt={ele.memberNick} />
+                      <img src={imagePath} alt={member.memberNick} />
                     </CardCover>
-                    <CardCover className="card-cover" />
-                    <CardContent sx={{ justifyContent: "flex-end" }}>
-                      <Stack
-                        flexDirection="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                      >
-                        <Typography
-                          level="h2"
-                          fontSize="lg"
-                          textColor="#fff"
-                          mb={1}
-                          className="member-nickname"
-                        >
-                          {ele.memberNick}
-                        </Typography>
-
-                        <Typography
-                          sx={{
-                            fontWeight: "md",
-                            color: "neutral.300",
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                        </Typography>
-                      </Stack>
-                    </CardContent>
-                    <CardOverflow
-                      sx={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        paddingY: 1,
-                      }}
-                    >
-                      <Typography
-                        marginTop={15}
-                        fontWeight="md"
-                        textAlign="center"
-                        className="member-nickname"
-                      >
-                        {ele.memberNick}
+                    <CardContent>
+                      <Typography level="h2" fontSize="lg" textColor="#fff" mb={1}>
+                        {member.memberNick}
                       </Typography>
-                    </CardOverflow>
+                    </CardContent>
                   </Card>
-                </CssVarsProvider>
-              ))
+                );
+              })
             ) : (
               <Box className="no-data">No active users available</Box>
             )}
