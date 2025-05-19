@@ -45,7 +45,7 @@ export default function HomePage() {
       page: 1,
       limit: 4,
       order: "createdAt",
-      //productCollection: ProductCollection.DISH,
+      productCollection: ProductCollection.DISH,
     })
     .then((data) => setNewDishes(data))
     .catch((err) => console.log(err));

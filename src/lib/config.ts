@@ -1,7 +1,7 @@
 
 
 export const serverApi: string = `${process.env.REACT_APP_API_URL}`;
-
+console.log(" API URL:", serverApi);
 
 export const Messages = {
     error1: "Something went wrong!",

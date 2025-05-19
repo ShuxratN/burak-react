@@ -2,7 +2,7 @@ import { Box, Container, Stack } from "@mui/material";
 import { Card, CardCover, CardContent, Typography } from "@mui/joy";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { retrievePopularDishes, retrieveTopUsers } from "./selector";
+import {  retrieveTopUsers } from "./selector";
 import { serverApi } from "../../../lib/config";
 import { Member } from "../../../lib/types/member";
 
