@@ -11,6 +11,25 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper";
 
+import {  useDispatch, } from "react-redux";
+import { createSelector, Dispatch } from"@reduxjs/toolkit";
+import { setChosenProduct, setProducts, setRestaurant } from "./slice";
+import { Product } from "../../../lib/types/product";
+import { retrievePopularDishes } from "../homePage/selector";
+import { retrieveChosenProduct, retrieveProducts } from "./selector";
+
+/** REDUX SLICE $ SELECTOR */
+const actionDispatch = (dispatch: Dispatch) => ({
+  setRestaurant: (data: Product[]) => dispatch(setRestaurant(data)),// kirib kelayotgan data payload bolyapti
+  setChosenProduct: (data: Product[]) => dispatch(setChosenProduct(data)),
+});
+const chosenProductRetriever = createSelector(retrieveChosenProduct, (chosenProduct) => ({
+   chosenProduct }));
+
+const restaurantRetreiver = createSelector(retrieveProducts, (restaurant) => ({
+  restaurant,
+})); 
+
 export default function ChosenProduct() {
   return (
     <div className={"chosen-product"}>

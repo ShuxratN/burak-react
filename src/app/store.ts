@@ -3,6 +3,7 @@ import HomePage from "./screens/homePage";
 import HomePageReducer from "./screens/homePage/slice";
 import { getDefaultCompilerOptions } from "typescript";
 import { curryGetDefaultMiddleware } from "@reduxjs/toolkit/dist/getDefaultMiddleware";
+import ProductsPageReducer from "./screens/productsPage/slice";
 
 export const store = configureStore({
   middleware: (getGetDefaultMiddleware) => 
@@ -10,6 +11,7 @@ export const store = configureStore({
     getGetDefaultMiddleware().concat(),
   reducer: {
     homePage: HomePageReducer,
+    productsPage: ProductsPageReducer,
   },
 });
 
