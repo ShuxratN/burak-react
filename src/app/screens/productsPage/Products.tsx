@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {Box, Button, Container,  Stack,Badge,  Pagination,PaginationItem, } from "@mui/material";
 import TextField from '@mui/material/TextField';
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
@@ -7,29 +7,80 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LocationOn from '@mui/icons-material/LocationOn';
 
-import {  useDispatch, } from "react-redux";
+import {  useDispatch, useSelector, } from "react-redux";
 import { createSelector, Dispatch } from"@reduxjs/toolkit";
 import { setProducts } from "./slice";
-import { Product } from "../../../lib/types/product";
-import { retrievePopularDishes } from "../homePage/selector";
+import { Product, ProductInquiry } from "../../../lib/types/product";
 import { retrieveProducts } from "./selector";
+import Productservice from "../../services/ProductService";
+import { ProductCollection } from "../../../lib/enums/product.enum";
+import { serverApi } from "../../../lib/config";
+import { Collections } from "@mui/icons-material";
+import { useHistory } from "react-router-dom";
 
 /** REDUX SLICE $ SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
   setProducts: (data: Product[]) => dispatch(setProducts(data)),// kirib kelayotgan data payload bolyapti
 });
-const productsRetriever = createSelector(retrieveProducts, (products) => ({ products }));
-
-const products = [
-  { productName: "Cutlet", imagePath: "/img/cutlet.webp" },
-  { productName: "Kebab", imagePath: "/img/kebab-fresh.webp" },
-  { productName: "Kebab", imagePath: "/img/kebab.webp" },
-  { productName: "Lavash", imagePath: "/img/lavash.webp" },
-  { productName: "Lavash", imagePath: "/img/lavash.webp" },
-  { productName: "Cutlet", imagePath: "/img/cutlet.webp" },
-];
+const productsRetriever = createSelector(retrieveProducts, (products) => ({ products,
+ }));
 
 export default function Products() {
+  const { setProducts } = actionDispatch(useDispatch());
+  const { products } = useSelector(productsRetriever);
+  const [productSearch, setProductSearch] = useState<ProductInquiry>({
+      page: 1,
+      limit: 8,
+      order: "createdAt",
+      productCollection: ProductCollection.DISH,
+      search: "",
+    })
+    const [searchText, setSearchText] = useState<string>("");
+    const history = useHistory();
+
+  useEffect(( ) => {
+    const product = new Productservice();
+    product
+    .getProducts(productSearch)
+    .then((data) => setProducts(data))
+    .catch((err) => console.log(err));
+  }, [productSearch]);
+
+  useEffect(() => {
+    if (searchText === "") {
+      productSearch.search = "";
+      setProductSearch({ ...productSearch})
+    }
+  }, [searchText]);
+
+  //** handlers */
+
+  const searchCollectionHandler = (collection: ProductCollection) => {
+    productSearch.page = 1;
+    productSearch.productCollection = collection;
+    setProductSearch({ ...productSearch });
+  };
+
+  const searchOrderHandler = (order: string) => {
+    productSearch.page = 1;
+    productSearch.order = order,
+    setProductSearch({ ...productSearch });
+  }
+   
+  const searchProductHandler = () => {
+    productSearch.search = searchText;
+    setProductSearch({ ...productSearch});
+  };
+
+  const paginationHandler = (e: ChangeEvent<any>, value: number) => {
+    productSearch.page = value;
+    setProductSearch({...productSearch });
+  };
+
+  const chooseDishHandler = (id: string) => {
+    history.push(`/product/${id}`);
+  };
+
   return (
     <div className={"products"}>
       <Container>
@@ -38,11 +89,22 @@ export default function Products() {
           <Stack className={"avatar-big-box"}> 
           
           <TextField className={"type"}
-              placeholder="Type here"
               variant="outlined"
+              placeholder="Type here"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") searchProductHandler();
+              }}
+              
+              
               InputProps={{
                 startAdornment: (
-                  <Button className="search" variant="contained" color="primary" startIcon={<LocationOn />}>
+                  <Button 
+                  className="search" 
+                  variant="contained" 
+                  color="primary" 
+                  startIcon={<LocationOn />}>
                       Search
                   </Button>
                 )
@@ -52,13 +114,34 @@ export default function Products() {
           </Stack>
           <Stack className={"dishes-filter-section"}>
             <Stack className={"dishes-filter-box"}>
-              <Button variant={"contained"} color={"primary"} className={"order"}>
+              <Button 
+              variant={"contained"} 
+              className={"order"}
+              color={
+                  productSearch.order === "createdAt" ? "primary" : "secondary"
+                }
+                onClick={() => searchOrderHandler( "createdAt")} 
+              >
                 New
               </Button>
-              <Button variant={"contained"} color={"secondary"} className={"order"}>
+              <Button 
+              variant={"contained"} 
+              className={"order"}
+              color={
+                  productSearch.order === "productPrice" ? "primary" : "secondary"
+                }
+                onClick={() => searchOrderHandler( "productPrice")} 
+              >
                 Price
               </Button>
-              <Button variant={"contained"} color={"secondary"} className={"order"}>
+              <Button 
+              variant={"contained"} 
+              className={"order"}
+              color={
+                  productSearch.order === "productViews" ? "primary" : "secondary"
+                }
+                onClick={() => searchOrderHandler( "productViews")} 
+              >
                 Views
               </Button>
             </Stack>
@@ -67,19 +150,59 @@ export default function Products() {
           <Stack className={"list-category-section"}>
             <Stack className={"product-category"}>
               <Stack className={"category-main"}>
-                <Button variant={"contained"} color={"secondary"}>
+                <Button 
+                variant={"contained"} 
+                color={
+                  productSearch.productCollection === ProductCollection.OTHER
+                  ? "primary"
+                  : "secondary"}
+                onClick={() => 
+                  searchCollectionHandler(ProductCollection.OTHER)}
+                >
                   Other
                 </Button>
-                <Button variant={"contained"} color={"secondary"}>
+                <Button 
+                variant={"contained"} 
+                color={
+                  productSearch.productCollection === ProductCollection.DESSERT
+                  ? "primary"
+                  : "secondary"}
+                onClick={() => 
+                  searchCollectionHandler(ProductCollection.DESSERT)}
+                >
                   Dessert
                 </Button>
-                <Button variant={"contained"} color={"secondary"}>
+                <Button 
+                variant={"contained"} 
+                color={
+                  productSearch.productCollection === ProductCollection.DRINK
+                  ? "primary"
+                  : "secondary"}
+                onClick={() => 
+                  searchCollectionHandler(ProductCollection.DRINK)}
+                >
                   Drink
                 </Button>
-                <Button variant={"contained"} color={"secondary"}>
+                <Button 
+                variant={"contained"} 
+               color={
+                  productSearch.productCollection === ProductCollection.SALAD
+                  ? "primary"
+                  : "secondary"}
+                onClick={() => 
+                  searchCollectionHandler(ProductCollection.SALAD)}
+                >
                   Salad
                 </Button>
-                <Button variant={"contained"} color={"primary"}>
+                <Button
+                variant={"contained"} 
+              color={
+                  productSearch.productCollection === ProductCollection.DISH
+                  ? "primary"
+                  : "secondary"}
+                onClick={() => 
+                  searchCollectionHandler(ProductCollection.DISH)}
+                >
                   Dish
                 </Button>
               </Stack>
@@ -87,23 +210,21 @@ export default function Products() {
 
             <Stack className={"product-wrapper"}>
               {products.length !== 0 ? (
-                products.map((product, index) => {
+                products.map((product: Product) => {
+                  const imagePath = `${serverApi}/${product.productImages[0]}`;
+                  const sizeVolume = 
+                  product.productCollection === ProductCollection.DRINK
+                  ? product.productVolume + " litre"
+                  : product.productSize + " size";
                   return (
-                    <Stack  key={index} className={"product-card"}>
+                    <Stack  key={product._id} className={"product-card"}>
                       <Stack
                         className={"product-img"}
                         sx={{
-                          backgroundImage: `url(${product.imagePath})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                          height: "361px",
-                          width: "273px",
-                          borderRadius: "10px",
-                          position: "relative",
-                          mb: 1.5,
+                          backgroundImage: `url(${imagePath})`,
                         }}
                       >
-                        <div className={"product-sale"}>Normal size</div>
+                        <div className={"product-sale"}>{sizeVolume} </div>
                         <Button className={"shop-btn"}>
                           <img
                             src="/icons/shopping-cart.svg"
@@ -112,10 +233,11 @@ export default function Products() {
                         </Button>
 
                         <Button className={"view-btn"} sx={{ right: "36px" }}>
-                          <Badge badgeContent={20} color="secondary">
+                          <Badge badgeContent={product.productViews} color="secondary">
                             <RemoveRedEyeIcon
                               sx={{
-                                color:  "gray",
+                                color: 
+                                product.productViews === 0 ? "gray" : "white",
                               }}
                             />
                           </Badge>
@@ -128,7 +250,7 @@ export default function Products() {
                         </span>
                         <div className={"product-desc"}>
                           <MonetizationOnIcon />
-                          {12}
+                          {product.productPrice}
                         </div>
                       </Box>
                     </Stack>
@@ -143,8 +265,12 @@ export default function Products() {
           {/* Pagination */}
           <Stack className={"pagination-section"}>
             <Pagination
-              count={3}
-              page={1}
+              count={
+                products.length !== 0
+                ? productSearch.page + 1 
+                : productSearch.page
+              }
+              page={productSearch.page}
               renderItem={(item) => (
                 <PaginationItem
                   components={{
@@ -155,6 +281,7 @@ export default function Products() {
                   color="secondary"
                 />
               )}
+              onChange={paginationHandler}
             />
           </Stack>
         </Stack>
