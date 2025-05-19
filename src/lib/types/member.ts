@@ -1,6 +1,11 @@
+import { ReactNode } from "react";
 import { MemberStatus, MemberType } from "../enums/member.enum";
 
 export interface Member {
+    productDesc: any;
+    productViews: ReactNode;
+    productName: ReactNode;
+    productImages: any;
     toJSON(): Member | PromiseLike<Member>;  
     _id:  string;
     memberType: MemberType;
