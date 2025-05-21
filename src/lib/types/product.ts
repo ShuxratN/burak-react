@@ -1,7 +1,7 @@
 import { ProductCollection, ProductSize, ProductStatus, ProductVolume } from "../enums/product.enum";
 
 
-export interface Product extends Document {
+export interface Product {
     id: string;
     _id: string;
     productStatus: ProductStatus;

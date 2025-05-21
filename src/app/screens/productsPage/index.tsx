@@ -13,10 +13,10 @@ export default function ProductsPage() {
       <div className={"products-page"}>
         <Switch>
           <Route path={`${products.path}/:productId`}>
-          <ChosenProduct/>  
+             <ChosenProduct/>  
           </Route>
           <Route path={`${products.path}`}>
-          <Products />
+              <Products />
           </Route>
         </Switch>
       </div>

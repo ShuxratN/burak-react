@@ -11,10 +11,10 @@ export const retrieveRestaurant = createSelector(
 
 export const retrieveChosenProduct = createSelector(
     selectProductsPage,
-    (ProductsPage) => ProductsPage.restaurant
+    (ProductsPage) => ProductsPage.chosenProduct
 );
 
 export const retrieveProducts = createSelector(
     selectProductsPage,
-    (ProductsPage) => ProductsPage.restaurant
+    (ProductsPage) => ProductsPage.products
 );

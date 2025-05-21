@@ -11,17 +11,13 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper";
 
-import {  useDispatch, useSelector, } from "react-redux";
-import { createSelector, Dispatch } from"@reduxjs/toolkit";
-import { setChosenProduct, setProducts, setRestaurant } from "./slice";
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector, Dispatch } from "@reduxjs/toolkit";
+import { setChosenProduct, setRestaurant } from "./slice";
 import { Product } from "../../../lib/types/product";
-import { retrievePopularDishes } from "../homePage/selector";
-import { retrieveChosenProduct, retrieveProducts } from "./selector";
-import { stringify } from "querystring";
+import { retrieveChosenProduct, retrieveProducts, retrieveRestaurant } from "./selector";
 import { useParams } from "react-router-dom";
-import Productservice from "../../services/ProductService";
 import ProductService from "../../services/ProductService";
-import { MemberStatus } from "../../../lib/enums/member.enum";
 import MemberService from "../../services/MemberService";
 import { Member } from "../../../lib/types/member";
 import { serverApi } from "../../../lib/config";
@@ -34,15 +30,16 @@ const actionDispatch = (dispatch: Dispatch) => ({
 const chosenProductRetriever = createSelector(retrieveChosenProduct, (chosenProduct) => ({
    chosenProduct }));
 
-const restaurantRetreiver = createSelector(retrieveProducts, (restaurant) => ({
+const restaurantRetreiver = createSelector(retrieveRestaurant, (restaurant) => ({
   restaurant,
 })); 
 
 export default function ChosenProduct() {
   const { productId } = useParams<{ productId: string }>();
-  const {setRestaurant, setChosenProduct} = actionDispatch(useDispatch);
+  const {setRestaurant, setChosenProduct} = actionDispatch(useDispatch());
   const {chosenProduct} = useSelector(chosenProductRetriever);
   const { restaurant } = useSelector(restaurantRetreiver);
+
   useEffect(() => {
     const product = new ProductService();
     product
@@ -55,7 +52,7 @@ export default function ChosenProduct() {
     .getRestaurant()
     .then((data) => setRestaurant(data))
     .catch((err) => console.log(err));
-  },[ ]);
+  },[]);
 
   if (!chosenProduct) return null;
   return (
@@ -106,7 +103,7 @@ export default function ChosenProduct() {
             <Divider height="1" width="100%" bg="#000000" />
             <div className={"product-price"}>
               <span>Price:</span>
-              <span>$12</span>
+              <span>${chosenProduct?.productPrice}</span>
             </div>
             <div className={"button-box"}>
               <Button variant="contained">Add To Basket</Button>

@@ -30,7 +30,7 @@ class Productservice {
         try {
             const url = `${this.path}/product/${productId}`;
             const result = await axios.get(url,  { withCredentials: true});
-            console.log("getProducts:", result);
+            console.log("getProduct:", result);
 
             return result.data;
         }  catch (err ) {
