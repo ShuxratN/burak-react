@@ -82,7 +82,7 @@ export default function Products() {
   };
 
   const chooseDishHandler = (id: string) => {
-    history.push(`/product/${id}`);
+    history.push(`/products/${id}`);
   };
 
   return (
