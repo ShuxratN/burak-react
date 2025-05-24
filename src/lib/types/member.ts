@@ -2,11 +2,7 @@ import { ReactNode } from "react";
 import { MemberStatus, MemberType } from "../enums/member.enum";
 
 export interface Member {
-    productDesc: any;
-    productViews: ReactNode;
-    productName: ReactNode;
-    productImages: any;
-    toJSON(): Member | PromiseLike<Member>;  
+ 
     _id:  string;
     memberType: MemberType;
     memberStatus: MemberStatus;
@@ -31,7 +27,7 @@ export interface MemberInput {
     memberAddress?: string;
     memberDesc?: string;
     memberImage?: string;
-    memberPoints: number;
+    memberPoints?: number;
 }
 
 export interface LoginInput {
