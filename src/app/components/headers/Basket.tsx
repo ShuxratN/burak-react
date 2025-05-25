@@ -94,14 +94,14 @@ export default function Basket( props: BasketProps ) {
             { cartItems.length === 0 ? (
             <div>Cart is empty!</div> 
             ) : (
-              <Stack>
+               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <div> Cart Products: </div>
                 <DeleteForeverIcon
                 sx={{ml: "5px", cursor: "pointer"}}
                 color= {"primary"}
                 onClick={() => onDeleteAll()}
                 />
-              </Stack>
+              </Stack> 
             )}
           </Box>
 
