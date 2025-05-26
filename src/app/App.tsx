@@ -15,7 +15,6 @@ import useBasket from "./hooks/useBasket";
 import AuthenticationModal from "./components/auth";
 import { sweetErrorHandling, sweetTopSuccessAlert } from "../lib/sweetAlert";
 import { Messages } from "../lib/config";
-import Memberservice from "./services/MemberService";
 import MemberService from "./services/MemberService";
 import { useGlobals } from "./hooks/useGlobals";
 
@@ -40,6 +39,7 @@ function App() {
  const handleLogoutRequest = async () => {
   try {
     const member = new MemberService();
+    await member.logout();
     await sweetTopSuccessAlert("succes", 700);
     setAuthMember(null);
   } catch (err) {
