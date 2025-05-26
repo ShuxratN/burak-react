@@ -161,7 +161,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 id="outlined-basic"
                 label="password"
                 variant="outlined"
-                type="password"
                 onChange={handlePassword}
                 onKeyDown={handlePasswordKeyDown}
               />
@@ -217,7 +216,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 id={"outlined-basic"}
                 label={"password"}
                 variant={"outlined"}
-                type={"password"}
                 onChange={handlePassword}
                 onKeyDown={handlePasswordKeyDown}
               />

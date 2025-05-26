@@ -1,18 +1,33 @@
-import { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent, } from "react";
 import { Container, Stack, Box } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
 import { TextField, Typography } from "@mui/material";
-import "../../../css/order.css";
 import FinishedOrders from "./FinishedOrders";
 import ProcessOrders from "./ProcessOrders";
 import PausedOrders from "./PausedOrders";
+import { DefaultRootState, useDispatch, } from "react-redux";
+import { Dispatch } from"@reduxjs/toolkit";
+import { setPausedOrders, setProcessOrders, setFinishedOrders } from "./slice";
+import "../../../css/order.css";
+import { Order } from "../../../lib/types/order";
+
+/** REDUX SLICE $ SELECTOR */
+const actionDispatch = (dispatch: Dispatch) => ({
+  setPausedOrders: (data: Order[]) => dispatch(setPausedOrders(data)),// kirib kelayotgan data payload bolyapti
+  setProcessOrders: (data: Order[]) => dispatch(setProcessOrders(data)),
+  setFinishedOrders: (data: Order[]) => dispatch(setFinishedOrders(data))
+});
 
 
 export default function OrdersPage() {
+  const { setPausedOrders, setProcessOrders, setFinishedOrders } = 
+  actionDispatch(useDispatch());
   const [value, setValue] = useState("1");
+
+  /** HANDLERS */
 
   const handleChange = (e: SyntheticEvent, newValue: string) => {
     setValue(newValue);

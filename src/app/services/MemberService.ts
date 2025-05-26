@@ -3,7 +3,7 @@ import { serverApi } from "../../lib/config";
 import { LoginInput, Member, MemberInput } from "../../lib/types/member";
 
 
-class Memberservice {
+class MemberService {
  private readonly path: string;
 
     constructor() {
@@ -88,4 +88,4 @@ class Memberservice {
 
 }
 
-export default Memberservice;
+export default MemberService;
