@@ -27,7 +27,6 @@ export default function OtherNavbar (props: OtherNavbarProps) {
     onRemove, 
     onDelete, 
     onDeleteAll, 
-    setSignupOpen,
     setLoginOpen,
     handleLogoutClick,
     anchorEl,
@@ -79,7 +78,7 @@ export default function OtherNavbar (props: OtherNavbarProps) {
                             <Button
                             variant="contained"
                             className="login-button"
-                            onClick={() => setSignupOpen(true)}
+                            onClick={() => setLoginOpen(true)}
                             > 
                             Login </Button>
                         </Box>

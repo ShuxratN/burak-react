@@ -1,18 +1,20 @@
-import { useState, SyntheticEvent, } from "react";
+import { useState, SyntheticEvent, useEffect, } from "react";
 import { Container, Stack, Box } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
-import { TextField, Typography } from "@mui/material";
+import { TextField, } from "@mui/material";
 import FinishedOrders from "./FinishedOrders";
 import ProcessOrders from "./ProcessOrders";
 import PausedOrders from "./PausedOrders";
 import { DefaultRootState, useDispatch, } from "react-redux";
 import { Dispatch } from"@reduxjs/toolkit";
 import { setPausedOrders, setProcessOrders, setFinishedOrders } from "./slice";
+import { Order, OrderInquiry } from "../../../lib/types/order";
+import { OrderStatus } from "../../../lib/enums/order.enum";
+import OrderService from "../../services/OrderService";
 import "../../../css/order.css";
-import { Order } from "../../../lib/types/order";
 
 /** REDUX SLICE $ SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -26,7 +28,31 @@ export default function OrdersPage() {
   const { setPausedOrders, setProcessOrders, setFinishedOrders } = 
   actionDispatch(useDispatch());
   const [value, setValue] = useState("1");
+  const [orderInquiry, setOrderInquiry] = useState<OrderInquiry>({
+    page: 1,
+    limit: 5,
+    orderStatus: OrderStatus.PAUSE,
+  });
 
+  useEffect(() => {
+    const order = new OrderService();
+
+    order
+    .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PAUSE })
+    .then((data: Order[]) => setPausedOrders(data))
+    .catch((err: any) => console.log(err));
+
+     order
+    .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PROCESS })
+    .then((data: Order[]) => setProcessOrders(data))
+    .catch((err: any) => console.log(err));
+
+     order
+    .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.FINISH })
+    .then((data: Order[]) => setFinishedOrders(data))
+    .catch((err: any) => console.log(err));    
+  
+  }, [orderInquiry]);
   /** HANDLERS */
 
   const handleChange = (e: SyntheticEvent, newValue: string) => {
