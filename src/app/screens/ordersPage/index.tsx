@@ -8,13 +8,14 @@ import { TextField, } from "@mui/material";
 import FinishedOrders from "./FinishedOrders";
 import ProcessOrders from "./ProcessOrders";
 import PausedOrders from "./PausedOrders";
-import { DefaultRootState, useDispatch, } from "react-redux";
+import {  useDispatch, } from "react-redux";
 import { Dispatch } from"@reduxjs/toolkit";
 import { setPausedOrders, setProcessOrders, setFinishedOrders } from "./slice";
 import { Order, OrderInquiry } from "../../../lib/types/order";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import OrderService from "../../services/OrderService";
 import "../../../css/order.css";
+import { useGlobals } from "../../hooks/useGlobals";
 
 /** REDUX SLICE $ SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -27,6 +28,7 @@ const actionDispatch = (dispatch: Dispatch) => ({
 export default function OrdersPage() {
   const { setPausedOrders, setProcessOrders, setFinishedOrders } = 
   actionDispatch(useDispatch());
+  const { orderBuilder } = useGlobals();
   const [value, setValue] = useState("1");
   const [orderInquiry, setOrderInquiry] = useState<OrderInquiry>({
     page: 1,
@@ -39,20 +41,19 @@ export default function OrdersPage() {
 
     order
     .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PAUSE })
-    .then((data: Order[]) => setPausedOrders(data))
-    .catch((err: any) => console.log(err));
+    .then((data) => setPausedOrders(data))
+    .catch((err) => console.log(err));
 
      order
     .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PROCESS })
-    .then((data: Order[]) => setProcessOrders(data))
-    .catch((err: any) => console.log(err));
+    .then((data) => setProcessOrders(data))
+    .catch((err) => console.log(err));
 
      order
     .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.FINISH })
-    .then((data: Order[]) => setFinishedOrders(data))
-    .catch((err: any) => console.log(err));    
-  
-  }, [orderInquiry]);
+    .then((data) => setFinishedOrders(data))
+    .catch((err) => console.log(err));    
+  }, [orderInquiry, orderBuilder]);
   /** HANDLERS */
 
   const handleChange = (e: SyntheticEvent, newValue: string) => {
@@ -81,10 +82,10 @@ export default function OrdersPage() {
 
             <Stack className="order-main-content">
               <TabPanel value="1">
-                <PausedOrders />
+                <PausedOrders setValue={setValue} />
               </TabPanel>
               <TabPanel value="2">
-                <ProcessOrders />
+                <ProcessOrders setValue={setValue} />
               </TabPanel>
               <TabPanel value="3">
                 <FinishedOrders />
