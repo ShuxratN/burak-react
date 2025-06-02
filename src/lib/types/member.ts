@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { MemberStatus, MemberType } from "../enums/member.enum";
 
 export interface Member {
+    data(data: any): unknown;
  
     _id:  string;
     memberType: MemberType;
@@ -26,7 +27,7 @@ export interface MemberInput {
     memberPassword: string;
     memberAddress?: string;
     memberDesc?: string;
-    memberImage?: string;
+    memberImage?: string | File;
     memberPoints?: number;
 }
 
@@ -36,12 +37,10 @@ export interface LoginInput {
 }
 
 export interface MemberUpdateInput {
-    _id:  string;
-    memberStatus?: MemberStatus;
     memberNick?: string;
     memberPhone?: string;
     memberPassword?: string;
     memberAddress?: string;
     memberDesc?: string;
-    memberImage?: string;
+    memberImage?: File | string;
 }
